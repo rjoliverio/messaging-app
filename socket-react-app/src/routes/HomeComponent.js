@@ -9,7 +9,9 @@ const HomeComponent = () => {
         setShow(true);
     }
     return (
+        
         <div className='text-white'>
+             <h1 className='text-white mt-5'>Omingle</h1>
             <p>A messaging application tool</p>
             <div className='w-50 m-auto h-100 mt-5 flex justify-content-center p-5 border rounded border-1 border-white'>
                 <div className="d-grid gap-3">
