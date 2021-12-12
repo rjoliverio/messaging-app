@@ -7,6 +7,7 @@ participant.model.hasMany(group.model, {foreignKey: 'gc_id',sourceKey:'gc_id', a
 message.model.hasMany(group.model, {foreignKey: 'gc_id',sourceKey:'gc_id', as:'MessageGroupChat'});
 message.model.hasMany(participant.model, {foreignKey: 'participant_id',sourceKey:'participant_id', as:'MessageParticipant'});
 
+
 exports.create=async (req,res)=>{
     let gc=await group.model.findOne({ where: { gc_name: req.body.group } });
     if(gc===null){

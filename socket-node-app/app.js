@@ -12,8 +12,10 @@ var server = app.listen(8000);
 const io = socket(server);
 
 const createRoutes=require('./routes/createGroupRoutes');
+const joinRoutes=require('./routes/joinGroupRoutes');
 
 app.use("/create",createRoutes);
+app.use("/join", joinRoutes);
 //initializing the socket io connection 
 io.on("connection", (socket) => {
   //for a new user joining the room

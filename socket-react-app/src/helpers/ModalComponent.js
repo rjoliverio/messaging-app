@@ -8,6 +8,7 @@ const ModalComponent = (props) => {
     const {register, handleSubmit} = useForm();
     const navigate = useNavigate();
     const onSubmit = (data) => {
+        const bool = {isJoin};
         // fetch('http://localhost:8000/create', {
         //     method: 'post',
         //     headers: {
@@ -19,12 +20,25 @@ const ModalComponent = (props) => {
         // }).then(res => {
         //     console.log(res);
         // });
-        axios.post(`http://localhost:8000/create`, data)
-        .then(res => {
-            if(res.data.success===true){
-                navigate(`/chat/${res.data.data.gc_id}/${res.data.data.participant_id}`);
-            }
-        })
+        console.log("Body: ", data);
+        if(bool.isJoin == true){
+            axios.get('http://localhost:8000/join/' + data.group + "/" + data.user)
+            .then(res => {
+                console.log(res.data);
+                navigate('/chat/'+ res.data.data.group.gc_id + '/' + res.data.data.user.participant_id);
+            }).catch((e) => {
+                console.log(e);
+            })
+        }else{
+            axios.post(`http://localhost:8000/create`, data)
+                .then(res => {
+                if(res.data.success===true){
+                    navigate(`/chat/${res.data.data.gc_id}/${res.data.data.participant_id}`);
+                }
+            })
+        }
+        
+        
     };
     return (
         <Modal show={show} onHide={()=>setShow(false)} centered >
