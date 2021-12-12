@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2021 at 05:07 PM
--- Server version: 10.4.8-MariaDB
--- PHP Version: 7.3.11
+-- Generation Time: Dec 12, 2021 at 04:32 PM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 7.4.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -111,7 +110,6 @@ ALTER TABLE `messages`
 --
 ALTER TABLE `participants`
   ADD PRIMARY KEY (`participant_id`),
-  ADD UNIQUE KEY `participant_username` (`participant_username`),
   ADD KEY `FK_groups_1` (`gc_id`);
 
 --
@@ -129,7 +127,7 @@ ALTER TABLE `sequelizemeta`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `gc_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `gc_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -141,7 +139,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `participants`
 --
 ALTER TABLE `participants`
-  MODIFY `participant_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `participant_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

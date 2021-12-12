@@ -15,7 +15,6 @@ module.exports = {
       },
       participant_username: {
         type: Sequelize.STRING,
-        unique: true,
         allowNull: false
       },
       is_creator: {

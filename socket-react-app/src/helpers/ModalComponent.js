@@ -1,31 +1,54 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom'
-
+import { useForm } from "react-hook-form";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const ModalComponent = (props) => {
     const {show,setShow,isJoin}=props;
+    const {register, handleSubmit} = useForm();
     const navigate = useNavigate();
+    const onSubmit = (data) => {
+        // fetch('http://localhost:8000/create', {
+        //     method: 'post',
+        //     headers: {
+        //         'Accept': 'application/json, text/plain, */*',
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(data)
+        // }).then(res =>{ res.json()
+        // }).then(res => {
+        //     console.log(res);
+        // });
+        axios.post(`http://localhost:8000/create`, data)
+        .then(res => {
+            if(res.data.success===true){
+                navigate(`/chat/${res.data.data.gc_id}/${res.data.data.participant_id}`);
+            }
+        })
+    };
     return (
         <Modal show={show} onHide={()=>setShow(false)} centered >
         <Modal.Header closeButton>
           <Modal.Title>{isJoin?(<><i className="fa fa-video-camera" aria-hidden="true"></i>&nbsp;<span>Join Group Chat</span></>):(<><i className="fa fa-users" aria-hidden="true"></i>&nbsp;<span>Create New Group Chat</span></>)}</Modal.Title>
         </Modal.Header>
+        <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Body>
-        <form>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Username</label>
-                <input type="text" class="form-control" id="exampleInputUsername" placeholder='jonsnow'/>
+        
+            <div className="mb-3">
+                <label htmlFor="exampleInputEmail1" className="form-label">Username</label>
+                <input type="text" className="form-control" id="exampleInputUsername" required {...register("user")} placeholder='jonsnow'/>
             </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">{isJoin?("Group Name"):("New Group Name")}</label>
-                <input type="text" class="form-control" id="exampleInputGroupChat" placeholder='House Stark'/>
+            <div className="mb-3">
+                <label htmlFor="exampleInputEmail1" className="form-label">{isJoin?("Group Name"):("New Group Name")}</label>
+                <input type="text" className="form-control" id="exampleInputGroupChat" required {...register("group")} placeholder='House Stark'/>
             </div>
-        </form>
+        
         </Modal.Body>
         <Modal.Footer>
             <button type="button" className="btn btn-secondary" onClick={()=>setShow(false)}>Close</button>
-            <button type="button" className="btn btn-primary" onClick={()=> navigate({pathname: '/chat-page', state: {isJoin}})}>{isJoin?("Enter Group"):("Create Group")}</button>
+            <button type="submit" className="btn btn-primary" >{isJoin?("Enter Group"):("Create Group")}</button>
         </Modal.Footer>
+        </form>
       </Modal>
     )
 }
