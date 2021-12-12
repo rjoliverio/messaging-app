@@ -4,7 +4,7 @@ import AppDetailsComponent from "../helpers/AppDetailsComponent";
 import { Row, Col } from "react-bootstrap";
 
 const ChatComponent = (props) => {
-  const { isJoin } = props;
+  const { isJoin,socket } = props;
   return (
     <div className="container-fluid">
       <Row>

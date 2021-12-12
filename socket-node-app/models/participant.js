@@ -14,7 +14,6 @@ const participant=instance.sequelize.define("participants",{
       },
       participant_username: {
         type: DataTypes.STRING,
-        unique: true,
         allowNull: false
       },
       is_creator: {
