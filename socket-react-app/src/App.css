@@ -3,6 +3,7 @@
   min-height: 100vh;
   position: absolute;
   min-width:100vw;
+  z-index: -1;
   background-color: #282c34;
 }
 
