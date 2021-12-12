@@ -1,8 +1,10 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom'
 
 const ModalComponent = (props) => {
     const {show,setShow,isJoin}=props;
+    const navigate = useNavigate();
     return (
         <Modal show={show} onHide={()=>setShow(false)} centered >
         <Modal.Header closeButton>
@@ -22,7 +24,7 @@ const ModalComponent = (props) => {
         </Modal.Body>
         <Modal.Footer>
             <button type="button" className="btn btn-secondary" onClick={()=>setShow(false)}>Close</button>
-            <button type="button" className="btn btn-primary">{isJoin?("Enter Group"):("Create Group")}</button>
+            <button type="button" className="btn btn-primary" onClick={()=> navigate({pathname: '/chat-page', state: {isJoin}})}>{isJoin?("Enter Group"):("Create Group")}</button>
         </Modal.Footer>
       </Modal>
     )
