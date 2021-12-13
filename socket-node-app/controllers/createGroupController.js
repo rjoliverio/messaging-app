@@ -5,7 +5,7 @@ const participant=require("../models/participant");
 
 participant.model.hasMany(group.model, {foreignKey: 'gc_id',sourceKey:'gc_id', as: 'ParticipantGroupChat'});
 message.model.hasMany(group.model, {foreignKey: 'gc_id',sourceKey:'gc_id', as:'MessageGroupChat'});
-message.model.hasMany(participant.model, {foreignKey: 'participant_id',sourceKey:'participant_id', as:'MessageParticipant'});
+message.model.hasOne(participant.model, {foreignKey: 'participant_id',sourceKey:'participant_id', as:'MessageParticipant'});
 
 
 exports.create=async (req,res)=>{

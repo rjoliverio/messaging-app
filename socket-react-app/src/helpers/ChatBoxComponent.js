@@ -1,36 +1,39 @@
-import React from "react";
-// import { Row } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import MessagesComponent from "../helpers/MessagesComponent";
+import axios from "axios";
 import '../css/ChatBox.css'
 
 const ChatBoxComponent = (props) => {
-  const { group} = props;
-
+  let messages = [];
+  const [mes,setMes]=useState([]);
+  const [user,setUser]=useState("");
+  useEffect(() => {
+        axios
+        .post(`http://localhost:8000/join/get-data`, {group:props.group})
+        .then((res) => {
+            console.log("MESSAGES: ",res.data);
+            messages = res.data.data.GroupMessages;
+            setMessages(messages);
+            console.log(messages);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        
+  },[props.group]);
+  const setMessages = (data) =>{
+      (data !== undefined)? setMes(data):setMes({message:"No Participants Yet",content:"No List"});
+      setUser(props.user);
+  }
   return (
     <div className="container-fluid">
       <div className="card card-bordered">
         <div className="card-header">
           <h4 className="card-title">
-            <strong>{group}</strong>
+            <strong>{props.group}</strong>
           </h4>
         </div>
-        <div
-          className="box"
-          id="chat-content"
-        >
-          <div className="w-100 d-flex justify-content-end text-end">
-            
-            <div className="p-3 text-white"> 
-              <span class="fw-bold fw-size text-dark d-block">jonsnow</span>
-              <div className="bg-primary p-2 rounded text-wrap position-relative d-inline-block">hello world lorem ipsum </div>
-            </div>
-          </div>
-          <div className="w-100 d-flex justify-content-start text-start">
-            <div className="p-3 text-white"> 
-              <span class="fw-bold fw-size text-dark d-block">aryastark</span>
-              <div className="bg-secondary p-2 rounded text-wrap position-relative d-inline-block">hello world</div>
-            </div>
-          </div>
-        </div>
+        <MessagesComponent message={mes} myUser={user}/>
         <div className="box-footer">
           <form action="#" method="post">
             <div className="input-group">

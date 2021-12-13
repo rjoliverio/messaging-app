@@ -19,7 +19,7 @@ exports.join = async (req, res) => {
         }] 
     });
     console.log(gc);
-    if(gc){
+    if(gc!==null){
         let user=await participant.model.findOne({ 
             where: { participant_username: req.params.user },
             include: [{
@@ -32,6 +32,27 @@ exports.join = async (req, res) => {
             let p = await participant.model.create({gc_id:gc.gc_id,participant_username:req.params.user,is_creator:false});
             res.send({success:true,data:{group:gc, user:p}});
         }
+    }else{
+        res.send({success:false,data:null});
+    }
+}
+
+exports.getGroupChatHistory = async (req, res) =>{
+    let gc=await group.model.findOne({ 
+        where: { gc_name: req.body.group },
+        include: [{
+            model: participant.model, as: "GroupParticipants",
+            
+        },{
+            model: message.model, as: "GroupMessages",
+            include: [{
+                model: participant.model, as: "MessageParticipant"
+            }]
+        }] 
+    });
+    console.log(gc);
+    if(gc!==null){
+        res.send({success:true,data:gc});
     }else{
         res.send({success:false,data:null});
     }
