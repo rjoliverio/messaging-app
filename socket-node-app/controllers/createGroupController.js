@@ -17,6 +17,18 @@ exports.create=async (req,res)=>{
         res.send({success:false,data:null});
     }
 }
+exports.check=async (req,res)=>{
+    let p=await participant.model.findOne({ where: { participant_id: req.body.user,gc_id:req.body.group },
+        include: [{
+            model: group.model, as: "ParticipantGroupChat"
+        }]
+    });
+    if(p!==null){
+        res.send({success:true,data:p});
+    }else{
+        res.send({success:false,data:null});
+    }
+}
 // exports.viewMovieDetails=async (req,res)=>{
 //     let movies=await movie.model.findOne({
 //         where:{

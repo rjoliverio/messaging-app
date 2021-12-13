@@ -1,5 +1,8 @@
 .box {
-  width: 500px;
+  /* width: 500px; */
   height: 350px;
   border: solid white 1px;
+}
+.fw-size{
+  font-size: 14px;
 }
