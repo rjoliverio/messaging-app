@@ -21,7 +21,7 @@ const ModalComponent = (props) => {
         //     console.log(res);
         // });
         console.log("Body: ", data);
-        if(bool.isJoin == true){
+        if(bool.isJoin === true){
             axios.get('http://localhost:8000/join/' + data.group + "/" + data.user)
             .then(res => {
                 console.log(res.data);

@@ -12,7 +12,7 @@ function App() {
       <div className="mt-5"></div>
       <Routes>
         <Route path="/" element={<HomeComponent />} />
-        <Route path="/chat/:room/:user" element={<ChatComponent socket={socket} />} />
+        <Route path="/chat/:group/:user" element={<ChatComponent socket={socket} />} />
       </Routes>
     </div>
   );

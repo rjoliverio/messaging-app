@@ -2,7 +2,6 @@ import React from "react";
 import { Row } from "react-bootstrap";
 
 const ChatBoxComponent = (props) => {
-  const { isJoin } = props;
   return (
     <div className="container-fluid">
         <Row>
