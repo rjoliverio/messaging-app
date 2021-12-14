@@ -10,10 +10,10 @@ const AppDetailsComponent = (props) => {
         axios
         .post(`http://localhost:8000/join/get-data`, {group:props.group})
         .then((res) => {
-            console.log(res.data.data.GroupParticipants);
+            // console.log(res.data.data.GroupParticipants);
             dataHistory = res.data.data.GroupParticipants;
             setUsers(dataHistory);
-            console.log(dataHistory);
+            // console.log(dataHistory);
         })
         .catch((err) => {
           console.log(err);

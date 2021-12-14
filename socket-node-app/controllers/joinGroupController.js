@@ -9,7 +9,7 @@ group.model.hasMany(message.model, {foreignKey: 'gc_id',sourceKey:'gc_id', as:'G
 participant.model.hasMany(message.model, {foreignKey: 'gc_id',sourceKey:'gc_id', as:'ParticipantMessages'})
 
 exports.join = async (req, res) => {
-    console.log(req.params.group);
+    // console.log(req.params.group);
     let gc=await group.model.findOne({ 
         where: { gc_name: req.params.group },
         include: [{
@@ -18,10 +18,10 @@ exports.join = async (req, res) => {
             model: message.model, as: "GroupMessages"
         }] 
     });
-    console.log(gc);
+    // console.log(gc);
     if(gc!==null){
         let user=await participant.model.findOne({ 
-            where: { participant_username: req.params.user },
+            where: { participant_username: req.params.user,gc_id: gc.gc_id},
             include: [{
                 model: message.model, as: "ParticipantMessages"
             }] 
@@ -50,7 +50,7 @@ exports.getGroupChatHistory = async (req, res) =>{
             }]
         }] 
     });
-    console.log(gc);
+    // console.log(gc);
     if(gc!==null){
         res.send({success:true,data:gc});
     }else{

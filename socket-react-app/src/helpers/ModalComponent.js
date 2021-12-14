@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 const ModalComponent = (props) => {
-    const {show,setShow,isJoin}=props;
+    const {show,setShow,isJoin,socket}=props;
     const {register, handleSubmit} = useForm();
     const navigate = useNavigate();
     const onSubmit = (data) => {
@@ -24,7 +24,7 @@ const ModalComponent = (props) => {
         if(bool.isJoin === true){
             axios.get('http://localhost:8000/join/' + data.group + "/" + data.user)
             .then(res => {
-                console.log(res.data);
+                socket.emit("joinRoom", { user:data.user, group:data.group });
                 navigate('/chat/'+ res.data.data.group.gc_id + '/' + res.data.data.user.participant_id);
             }).catch((e) => {
                 console.log(e);
