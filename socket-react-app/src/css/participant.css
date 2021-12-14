@@ -1,0 +1,15 @@
+.dot {
+  height: 10px;
+  width: 10px;
+  background-color: rgba(187, 187, 187, 0.616);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dotOnline {
+  height: 10px;
+  width: 10px;
+  background-color: rgb(0, 255, 85);
+  border-radius: 50%;
+  display: inline-block;
+}

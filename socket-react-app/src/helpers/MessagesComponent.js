@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const MessagesComponent = (props) => {
     // console.log("USER", props.myUser)
-    const {socket}=props;
+    const {socket,join}=props;
     const [recents,setRecents]=useState([])
     useEffect(() => {
         socket.on("conversation", (data) => {
@@ -12,7 +12,13 @@ const MessagesComponent = (props) => {
         });
     }, [props.group, recents, socket])
   return (
-    <div className="box" id="chat-content">
+    <div className="box overflow-auto" id="chat-content">
+        <div className="mt-3">
+          {join.map((text,i)=>{
+            return <p key={i} className="text-secondary">{text}</p>
+          })}
+          
+        </div>
         {props.message.map((mes) => (
             (mes.MessageParticipant.participant_username !== props.myUser)?
                 <div className="w-100 d-flex justify-content-start text-start">

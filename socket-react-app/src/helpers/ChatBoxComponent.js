@@ -69,13 +69,8 @@ const ChatBoxComponent = (props) => {
           </h4>
           <span onClick={handleClose} className="float-end pe-auto"><i className="fa fa-times-circle text-danger close-hover" aria-hidden="true"></i></span>
         </div>
-        <div className="mt-3">
-          {join.map((text,i)=>{
-            return <p key={i} className="text-secondary">{text}</p>
-          })}
-          
-        </div>
-        <MessagesComponent message={mes} myUser={username} socket={socket}/>
+        
+        <MessagesComponent message={mes} myUser={username} join={join} socket={socket}/>
         <div className="box-footer">
           <form action="#" method="post">
             <div className="input-group">
