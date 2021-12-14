@@ -9,17 +9,6 @@ const ModalComponent = (props) => {
     const navigate = useNavigate();
     const onSubmit = (data) => {
         const bool = {isJoin};
-        // fetch('http://localhost:8000/create', {
-        //     method: 'post',
-        //     headers: {
-        //         'Accept': 'application/json, text/plain, */*',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(data)
-        // }).then(res =>{ res.json()
-        // }).then(res => {
-        //     console.log(res);
-        // });
         console.log("Body: ", data);
         if(bool.isJoin === true){
             axios.get('http://localhost:8000/join/' + data.group + "/" + data.user)

@@ -4,6 +4,7 @@ import ParticipantsListComponent from "../helpers/ParticipantsListComponent";
 import axios from "axios";
 
 const AppDetailsComponent = (props) => {
+  const {socket}=props;
   let dataHistory = [];
   const [data,setData]=useState([]);
   useEffect(() => {
@@ -11,6 +12,7 @@ const AppDetailsComponent = (props) => {
         .post(`http://localhost:8000/join/get-data`, {group:props.group})
         .then((res) => {
             // console.log(res.data.data.GroupParticipants);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             dataHistory = res.data.data.GroupParticipants;
             setUsers(dataHistory);
             // console.log(dataHistory);
@@ -40,7 +42,7 @@ const AppDetailsComponent = (props) => {
       </Row>
       <hr className="text-white" />
       <Row>
-        <ParticipantsListComponent participants={data}/>
+        <ParticipantsListComponent participants={data} socket={socket}/>
       </Row>
     </div>
   );

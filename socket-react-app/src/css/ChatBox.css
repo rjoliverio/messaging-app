@@ -6,3 +6,7 @@
 .fw-size{
   font-size: 14px;
 }
+.fa.fa-times-circle.text-danger.close-hover{
+  font-size: 30px;
+  cursor: pointer;
+}
