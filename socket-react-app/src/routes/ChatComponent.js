@@ -7,6 +7,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const ChatComponent = (props) => {
+  const {socket}=props;
   const [info,setInfo]=useState({myGroup:"",myUserName:""});
   const {group,user}=useParams();
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ const ChatComponent = (props) => {
               setInfo({myGroup:gc,myUserName:p});
             }
     })
+    
+    
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
@@ -28,7 +31,7 @@ const ChatComponent = (props) => {
     <div className="container-fluid">
       <Row>
         <Col>
-          <ChatBoxComponent group={info.myGroup} user={info.myUserName} />
+          <ChatBoxComponent group={info.myGroup} user={info.myUserName} socket={socket}/>
         </Col>
         <Col>
           <AppDetailsComponent  group={info.myGroup}/>

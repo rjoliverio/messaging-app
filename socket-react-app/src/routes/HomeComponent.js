@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ModalComponent from '../helpers/ModalComponent'
 
-const HomeComponent = () => {
+const HomeComponent = ({socket}) => {
     const [show,setShow]=useState(false);
     const [isJoin,setIsJoin]=useState(true);
     const handleJoin=(data)=>{
@@ -20,7 +20,7 @@ const HomeComponent = () => {
                 </div>
             </div>
             {/* JOIN MODAL */}
-            <ModalComponent show={show} setShow={setShow} isJoin={isJoin}/>
+            <ModalComponent show={show} setShow={setShow} isJoin={isJoin} socket={socket}/>
         </div>
     )
 }
