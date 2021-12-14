@@ -22,8 +22,9 @@ const ChatComponent = (props) => {
               setInfo({myGroup:gc,myUserName:p});
             }
     })
-    
-    
+    return ()=>{
+      socket.disconnect();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
@@ -34,7 +35,7 @@ const ChatComponent = (props) => {
           <ChatBoxComponent group={info.myGroup} user={info.myUserName} socket={socket}/>
         </Col>
         <Col>
-          <AppDetailsComponent  group={info.myGroup}/>
+          <AppDetailsComponent  group={info.myGroup} socket={socket}/>
         </Col>
       </Row>
     </div>
