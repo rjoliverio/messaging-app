@@ -31,7 +31,6 @@ const ChatBoxComponent = (props) => {
           var j=join;
           j.push(data.text);
           setJoin([...j]);
-          socket.emit("participant",{user:props.user});
         });
   },[props.group]);
   const setMessages = (data) =>{
