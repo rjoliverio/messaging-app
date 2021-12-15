@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
 import React, { useEffect, useState } from "react";
 import MessagesComponent from "../helpers/MessagesComponent";
 import axios from "axios";
 import '../css/ChatBox.css'
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom";
 
 const ChatBoxComponent = (props) => {
@@ -11,26 +12,25 @@ const ChatBoxComponent = (props) => {
   let messages = [];
   const [mes,setMes]=useState([]);
   const [username,setUser]=useState("");
-  const [join,setJoin]=useState([]);
   const [myMessage,setMyMessage]=useState("");
-  const navigate = useNavigate();
+  const [recents,setRecents]=useState([]);
+  // const navigate = useNavigate();
   useEffect(() => {
         axios
         .post(`http://localhost:8000/join/get-data`, {group:props.group})
         .then((res) => {
-            // console.log("MESSAGES: ",res.data);
             // eslint-disable-next-line react-hooks/exhaustive-deps
             messages = res.data.data.GroupMessages;
             setMessages(messages);
-            // console.log(messages);
         })
         .catch((err) => {
           console.log(err);
         });
         socket.on("message", (data) => {
-          var j=join;
-          j.push(data.text);
-          setJoin([...j]);
+          var j=recents;
+          j.push({data:null,hasText:true,text:data.text});
+          setRecents([...j]);
+          socket.emit("participant",{user:props.user});
         });
   },[props.group]);
   const setMessages = (data) =>{
@@ -38,23 +38,23 @@ const ChatBoxComponent = (props) => {
       setUser(props.user);
   }
   const handleChange=(e)=>{
-    if(e.target.value!==""){
-      setMyMessage(e.target.value);
-    }
+    setMyMessage(e.target.value);
   }
   const handleClick=(e)=>{
     e.preventDefault();
-    axios
-    .post(`http://localhost:8000/message`, {group:group,user:user,content:myMessage})
-    .then((res) => {
-      if(res.data.success){
-        socket.emit("chat",{group:props.group,user:props.user,content:myMessage});
-        setMyMessage("");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    if(myMessage!==""){
+      axios
+      .post(`http://localhost:8000/message`, {group:group,user:user,content:myMessage})
+      .then((res) => {
+        if(res.data.success){
+          socket.emit("chat",{group:props.group,user:props.user,content:myMessage});
+          setMyMessage("");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
   }
   return (
     <div className="container-fluid">
@@ -63,10 +63,10 @@ const ChatBoxComponent = (props) => {
           <h4 className="card-title d-inline-flex m-auto">
             <strong>{props.group}</strong>
           </h4>
-          <a className="float-end pe-auto" href="/"><i className="fa fa-times-circle text-danger close-hover" aria-hidden="true"></i></a>
+          <a href="/" className="float-end pe-auto"><i className="fa fa-times-circle text-danger close-hover" aria-hidden="true"></i></a>
         </div>
         
-        <MessagesComponent message={mes} myUser={username} join={join} socket={socket}/>
+        <MessagesComponent message={mes} myUser={username} recents={recents} setRecents={setRecents} socket={socket}/>
         <div className="box-footer">
           <form action="#" method="post">
             <div className="input-group">

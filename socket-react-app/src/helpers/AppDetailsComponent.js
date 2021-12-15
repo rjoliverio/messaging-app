@@ -37,13 +37,13 @@ const AppDetailsComponent = (props) => {
         <h1 className="text-white">Omingle</h1>
       </Row>
       <Row>
-        <h3 className="text-white">Description</h3>
+        <p className="text-white">A group messaging application</p>
       </Row>
       <Row>
         <h5 className="text-white">IT3206 Integrative Programming</h5>
         &nbsp;
-        <h5 className="text-white">Oliverio, Rogelio John M.</h5>
-        <h5 className="text-white">Ondoy, Aljann Niño J.</h5>
+        <h6 className="text-white">Oliverio, Rogelio John M.</h6>
+        <h6 className="text-white">Ondoy, Aljann Niño J.</h6>
       </Row>
       <hr className="text-white" />
       <Row>
