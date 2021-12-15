@@ -1,29 +1,22 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 const MessagesComponent = (props) => {
     // console.log("USER", props.myUser)
-    const {socket,join}=props;
+    const {socket,recents,setRecents}=props;
     const messagesEndRef = useRef(null);
-    const [recents,setRecents]=useState([]);
     const scrollToBottom = () => {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     };
     useEffect(() => {
         socket.on("conversation", (data) => {
             var temp=recents;
-            temp.push(data);
+            temp.push({data:data,hasText:false,text:""});
             setRecents([...temp]);
         });
         scrollToBottom();
-    }, [props.group, recents, socket])
+    }, [props.message, recents, setRecents, socket])
   return (
     <div className="box overflow-auto" id="chat-content">
-        <div className="mt-3">
-          {join.map((text,i)=>{
-            return <p key={i} className="text-secondary">{text}</p>
-          })}
-          
-        </div>
         {props.message.map((mes,i) => (
             (mes.MessageParticipant.participant_username !== props.myUser)?
                 <div key={i} className="w-100 d-flex justify-content-start text-start">
@@ -40,19 +33,23 @@ const MessagesComponent = (props) => {
                 </div>   
         ))}
         {recents.map((convo,i) => (
-            (convo.user !== props.myUser)?
+            (!convo.hasText)?(
+                (convo.data.user !== props.myUser)?
                 <div key={i} className="w-100 d-flex justify-content-start text-start">
                     <div className="p-3 text-white"> 
-                        <span className="fw-bold fw-size text-dark d-block">{convo.user}</span>
-                        <div className="bg-secondary p-2 rounded text-wrap position-relative d-inline-block">{convo.content}</div>
+                        <span className="fw-bold fw-size text-dark d-block">{convo.data.user}</span>
+                        <div className="bg-secondary p-2 rounded text-wrap position-relative d-inline-block">{convo.data.content}</div>
                     </div>
                 </div>:
                 <div key={i} className="w-100 d-flex justify-content-end text-end">
                     <div className="p-3 text-white"> 
-                        <span className="fw-bold fw-size text-dark d-block">{convo.user}</span>
-                        <div className="bg-primary p-2 rounded text-wrap position-relative d-inline-block">{convo.content}</div>
+                        <span className="fw-bold fw-size text-dark d-block">{convo.data.user}</span>
+                        <div className="bg-primary p-2 rounded text-wrap position-relative d-inline-block">{convo.data.content}</div>
                     </div>
-                </div>   
+                </div>
+            ):(
+                <p key={i} className="text-secondary">{convo.text}</p>
+            )
         ))}
         <div ref={messagesEndRef} />
   </div>

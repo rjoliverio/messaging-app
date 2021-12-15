@@ -12,26 +12,24 @@ const ChatBoxComponent = (props) => {
   let messages = [];
   const [mes,setMes]=useState([]);
   const [username,setUser]=useState("");
-  const [join,setJoin]=useState([]);
   const [myMessage,setMyMessage]=useState("");
+  const [recents,setRecents]=useState([]);
   // const navigate = useNavigate();
   useEffect(() => {
         axios
         .post(`http://localhost:8000/join/get-data`, {group:props.group})
         .then((res) => {
-            // console.log("MESSAGES: ",res.data);
             // eslint-disable-next-line react-hooks/exhaustive-deps
             messages = res.data.data.GroupMessages;
             setMessages(messages);
-            // console.log(messages);
         })
         .catch((err) => {
           console.log(err);
         });
         socket.on("message", (data) => {
-          var j=join;
-          j.push(data.text);
-          setJoin([...j]);
+          var j=recents;
+          j.push({data:null,hasText:true,text:data.text});
+          setRecents([...j]);
           socket.emit("participant",{user:props.user});
         });
   },[props.group]);
@@ -58,9 +56,6 @@ const ChatBoxComponent = (props) => {
       });
     }
   }
-  // const handleClose=()=>{
-  //   navigate('/');
-  // }
   return (
     <div className="container-fluid">
       <div className="card card-bordered">
@@ -71,7 +66,7 @@ const ChatBoxComponent = (props) => {
           <a href="/" className="float-end pe-auto"><i className="fa fa-times-circle text-danger close-hover" aria-hidden="true"></i></a>
         </div>
         
-        <MessagesComponent message={mes} myUser={username} join={join} socket={socket}/>
+        <MessagesComponent message={mes} myUser={username} recents={recents} setRecents={setRecents} socket={socket}/>
         <div className="box-footer">
           <form action="#" method="post">
             <div className="input-group">
