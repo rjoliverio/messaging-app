@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
 import React, { useEffect, useState } from "react";
 import MessagesComponent from "../helpers/MessagesComponent";
 import axios from "axios";
 import '../css/ChatBox.css'
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom";
 
 const ChatBoxComponent = (props) => {
@@ -13,7 +14,7 @@ const ChatBoxComponent = (props) => {
   const [username,setUser]=useState("");
   const [join,setJoin]=useState([]);
   const [myMessage,setMyMessage]=useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   useEffect(() => {
         axios
         .post(`http://localhost:8000/join/get-data`, {group:props.group})
@@ -39,27 +40,27 @@ const ChatBoxComponent = (props) => {
       setUser(props.user);
   }
   const handleChange=(e)=>{
-    if(e.target.value!==""){
-      setMyMessage(e.target.value);
-    }
+    setMyMessage(e.target.value);
   }
   const handleClick=(e)=>{
     e.preventDefault();
-    axios
-    .post(`http://localhost:8000/message`, {group:group,user:user,content:myMessage})
-    .then((res) => {
-      if(res.data.success){
-        socket.emit("chat",{group:props.group,user:props.user,content:myMessage});
-        setMyMessage("");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    if(myMessage!==""){
+      axios
+      .post(`http://localhost:8000/message`, {group:group,user:user,content:myMessage})
+      .then((res) => {
+        if(res.data.success){
+          socket.emit("chat",{group:props.group,user:props.user,content:myMessage});
+          setMyMessage("");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
   }
-  const handleClose=()=>{
-    navigate('/');
-  }
+  // const handleClose=()=>{
+  //   navigate('/');
+  // }
   return (
     <div className="container-fluid">
       <div className="card card-bordered">
@@ -67,7 +68,7 @@ const ChatBoxComponent = (props) => {
           <h4 className="card-title d-inline-flex m-auto">
             <strong>{props.group}</strong>
           </h4>
-          <span onClick={handleClose} className="float-end pe-auto"><i className="fa fa-times-circle text-danger close-hover" aria-hidden="true"></i></span>
+          <a href="/" className="float-end pe-auto"><i className="fa fa-times-circle text-danger close-hover" aria-hidden="true"></i></a>
         </div>
         
         <MessagesComponent message={mes} myUser={username} join={join} socket={socket}/>
