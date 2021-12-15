@@ -56,9 +56,6 @@ const ChatBoxComponent = (props) => {
       console.log(err);
     });
   }
-  const handleClose=()=>{
-    navigate('/');
-  }
   return (
     <div className="container-fluid">
       <div className="card card-bordered">
@@ -66,7 +63,7 @@ const ChatBoxComponent = (props) => {
           <h4 className="card-title d-inline-flex m-auto">
             <strong>{props.group}</strong>
           </h4>
-          <span onClick={handleClose} className="float-end pe-auto"><i className="fa fa-times-circle text-danger close-hover" aria-hidden="true"></i></span>
+          <a className="float-end pe-auto" href="/"><i className="fa fa-times-circle text-danger close-hover" aria-hidden="true"></i></a>
         </div>
         
         <MessagesComponent message={mes} myUser={username} join={join} socket={socket}/>
