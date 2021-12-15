@@ -20,6 +20,21 @@ app.use("/join", joinRoutes);
 app.use("/message", messageRoutes);
 //initializing the socket io connection
 
+var users = [];
+var delUsers = [];
+
+function hasDuplicates(array) {
+  var valuesSoFar = Object.create(null);
+  for (var i = 0; i < array.length; ++i) {
+      var value = array[i];
+      if (value in valuesSoFar) {
+          return true;
+      }
+      valuesSoFar[value] = true;
+  }
+  return false;
+}
+
 io.on("connection", (socket) => {
   //for a new user joining the room
   var credentials={
@@ -32,7 +47,9 @@ io.on("connection", (socket) => {
     credentials.group=group;
     console.log(socket.id, "=id");
     socket.join(group);
-  
+    users.push(user);
+    delUsers.push(credentials.user);
+
     if(is_creator === "yes"){
       //display a creation message to the user who created the room
       socket.emit("message", {
@@ -44,6 +61,12 @@ io.on("connection", (socket) => {
         text: `Welcome to ${group}, ${user}`,
       });
     }
+
+    //displays list of active users
+    io.to(group).emit("list", {
+      user:users,
+      deletedUsers:[]
+    });
 
     //displays a joined room message to all other room users except that particular user
     socket.broadcast.to(group).emit("message", {
@@ -63,22 +86,21 @@ io.on("connection", (socket) => {
     });
   });
 
-  //get active users
-  socket.on("participant", ({user}) => {
-    io.to(credentials.group).emit("list", {
-      user:credentials.user,
-      join:true
-    });
-  });
-
   //when the user exits the room
   socket.on("disconnect", () => {
     io.to(credentials.group).emit("message", {
       text: `${credentials.user} has left the room`,
     });
+    users.splice(users.indexOf(credentials.user), 1);
+    if(hasDuplicates(delUsers)){
+      delUsers.splice(delUsers.indexOf(credentials.user), 1);
+    }
     io.to(credentials.group).emit("list", {
-      user:credentials.user,
-      join:false
+      user:users,
+      deletedUsers:delUsers
     });
+    if(users.length == 0){
+      delUsers = [];
+    }
   });
 });

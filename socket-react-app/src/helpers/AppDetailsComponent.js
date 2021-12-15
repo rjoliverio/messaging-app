@@ -13,15 +13,21 @@ const AppDetailsComponent = (props) => {
         .then((res) => {
             // console.log(res.data.data.GroupParticipants);
             // eslint-disable-next-line react-hooks/exhaustive-deps
-            dataHistory = res.data.data.GroupParticipants;
+            // console.log(res.data.data.GroupParticipants);
+            // setData([...res.data.data.GroupParticipants]);
+            for(var x = 0; x < res.data.data.GroupParticipants.length; x++){
+              dataHistory.push(res.data.data.GroupParticipants[x].participant_username);
+            }
             setUsers(dataHistory);
+            console.log(data);
+            console.log(dataHistory);
             // console.log(dataHistory);
         })
         .catch((err) => {
           console.log(err);
         });
         
-  },[props.group]);
+  },[setData,props.group, socket]);
   const setUsers = (data) =>{
       (data !== undefined)? setData(data):setData({message:"No Participants Yet",content:"No List"});
   }
