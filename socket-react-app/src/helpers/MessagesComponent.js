@@ -14,7 +14,10 @@ const MessagesComponent = (props) => {
             setRecents([...temp]);
         });
         scrollToBottom();
-    }, [props.message, recents, setRecents, socket])
+    }, [recents, setRecents, socket])
+    useEffect(() => {
+        scrollToBottom();
+    }, [props.message])
   return (
     <div className="box overflow-auto" id="chat-content">
         {props.message.map((mes,i) => (
