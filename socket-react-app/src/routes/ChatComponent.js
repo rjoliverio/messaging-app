@@ -25,9 +25,8 @@ const ChatComponent = (props) => {
     return ()=>{
       socket.disconnect();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
   
+  }, [])
   return (
     <div className="container-fluid">
       <Row>
@@ -35,7 +34,7 @@ const ChatComponent = (props) => {
           <ChatBoxComponent group={info.myGroup} user={info.myUserName} socket={socket}/>
         </Col>
         <Col>
-          <AppDetailsComponent  group={info.myGroup} socket={socket}/>
+          <AppDetailsComponent  group={info.myGroup} user={info.myUserName} socket={socket}/>
         </Col>
       </Row>
     </div>
