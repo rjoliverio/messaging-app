@@ -27,7 +27,6 @@ const AppDetailsComponent = (props) => {
   }
   return (
     <div className="container-fluid">
-      <h1 className="text-white">{props.group}</h1>
       <Row>
         <h1 className="text-white">Omingle</h1>
       </Row>

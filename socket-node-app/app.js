@@ -26,20 +26,28 @@ io.on("connection", (socket) => {
     user:"",
     group:""
   }
-  socket.on("joinRoom", ({ user, group }) => {
+  socket.on("joinRoom", ({ user, group, is_creator }) => {
     // create user
     credentials.user=user;
     credentials.group=group;
     console.log(socket.id, "=id");
     socket.join(group);
-    //display a welcome message to the user who have joined a room
-    socket.emit("message", {
-      text: `Welcome to ${group}, ${user}`
-    });
+  
+    if(is_creator === "yes"){
+      //display a creation message to the user who created the room
+      socket.emit("message", {
+        text: `You created the group chat ${group}`,
+      });
+    }else{
+      //display a welcome message to the user who have joined a room
+      socket.emit("message", {
+        text: `Welcome to ${group}, ${user}`,
+      });
+    }
 
     //displays a joined room message to all other room users except that particular user
     socket.broadcast.to(group).emit("message", {
-      text: `${user} has joined ${group}`
+      text: (is_creator === "yes")? "":`${user} has joined ${group}`,
     });
   });
 
