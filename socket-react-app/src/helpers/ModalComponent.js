@@ -13,7 +13,7 @@ const ModalComponent = (props) => {
         if(bool.isJoin === true){
             axios.get('http://localhost:8000/join/' + data.group + "/" + data.user)
             .then(res => {
-                socket.emit("joinRoom", { user:data.user, group:data.group, is_creator:"no" });
+                socket.emit("joinRoom", { user:data.user, group:data.group, is_creator:false });
                 navigate('/chat/'+ res.data.data.group.gc_id + '/' + res.data.data.user.participant_id);
             }).catch((e) => {
                 console.log(e);
@@ -22,7 +22,7 @@ const ModalComponent = (props) => {
             axios.post(`http://localhost:8000/create`, data)
                 .then(res => {
                 if(res.data.success===true){
-                    socket.emit("joinRoom", { user:data.user, group:data.group, is_creator:"yes" });
+                    socket.emit("joinRoom", { user:data.user, group:data.group, is_creator:true });
                     navigate(`/chat/${res.data.data.gc_id}/${res.data.data.participant_id}`);
                 }
             })
