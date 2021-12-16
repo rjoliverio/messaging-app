@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
     users.push(user);
     delUsers.push(credentials.user);
 
-    if(is_creator === "yes"){
+    if(is_creator){
       //display a creation message to the user who created the room
       socket.emit("message", {
         text: `You created the group chat ${group}`,
@@ -70,7 +70,7 @@ io.on("connection", (socket) => {
 
     //displays a joined room message to all other room users except that particular user
     socket.broadcast.to(group).emit("message", {
-      text: (is_creator === "yes")? "":`${user} has joined ${group}`,
+      text: (is_creator)? "":`${user} has joined ${group}`,
     });
   });
 

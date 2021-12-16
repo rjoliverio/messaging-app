@@ -30,7 +30,6 @@ const ChatBoxComponent = (props) => {
           var j=recents;
           j.push({data:null,hasText:true,text:data.text});
           setRecents([...j]);
-          socket.emit("participant",{user:props.user});
         });
   },[props.group]);
   const setMessages = (data) =>{
