@@ -76,6 +76,11 @@ const ChatBoxComponent = (props) => {
                 className="form-control"
                 value={myMessage}
                 onChange={handleChange}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    handleClick(e);
+                  }
+                }}
               />
               <button type="button" onClick={handleClick} className="btn btn-warning btn-flat">
                 Send
