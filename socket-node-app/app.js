@@ -20,8 +20,8 @@ app.use("/join", joinRoutes);
 app.use("/message", messageRoutes);
 //initializing the socket io connection
 
-var users = [];
-var delUsers = [];
+var users = [{}];
+var delUsers = [{}];
 
 function hasDuplicates(array) {
   var valuesSoFar = Object.create(null);
@@ -37,18 +37,16 @@ function hasDuplicates(array) {
 
 io.on("connection", (socket) => {
   //for a new user joining the room
-  var credentials={
-    user:"",
-    group:""
-  }
+  var credentials={}
   socket.on("joinRoom", ({ user, group, is_creator }) => {
     // create user
     credentials.user=user;
     credentials.group=group;
     console.log(socket.id, "=id");
     socket.join(group);
-    users.push(user);
-    delUsers.push(credentials.user);
+    users.push(credentials);
+    delUsers.push(credentials);
+    
 
     if(is_creator){
       //display a creation message to the user who created the room
@@ -91,9 +89,11 @@ io.on("connection", (socket) => {
     io.to(credentials.group).emit("message", {
       text: `${credentials.user} has left the room`,
     });
-    users.splice(users.indexOf(credentials.user), 1);
-    if(hasDuplicates(delUsers)){
-      delUsers.splice(delUsers.indexOf(credentials.user), 1);
+    users.splice(users.findIndex(x => x.user === credentials.user && x.group === credentials.group), 1);
+    
+    var duplicates = [...new Set(delUsers.map(x => x.user && x.group))];
+    if(duplicates.length === 1){
+      delUsers.splice(delUsers.findIndex(x => x.user === credentials.user && x.group === credentials.group), 1);
     }
     io.to(credentials.group).emit("list", {
       user:users,

@@ -42,6 +42,9 @@ exports.getGroupChatHistory = async (req, res) =>{
         where: { gc_name: req.body.group },
         include: [{
             model: participant.model, as: "GroupParticipants",
+            include: [{
+                model: group.model, as: "ParticipantGroupChat"
+            }]
             
         },{
             model: message.model, as: "GroupMessages",

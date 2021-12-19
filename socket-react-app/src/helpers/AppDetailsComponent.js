@@ -5,23 +5,35 @@ import axios from "axios";
 
 const AppDetailsComponent = (props) => {
   const {socket}=props;
-  let dataHistory = [];
+  var dataHistory = [{}];
+  var primaryData = {};
   const [data,setData]=useState([]);
   useEffect(() => {
         axios
         .post(`http://localhost:8000/join/get-data`, {group:props.group})
         .then((res) => {
             for(var x = 0; x < res.data.data.GroupParticipants.length; x++){
-              dataHistory.push(res.data.data.GroupParticipants[x].participant_username);
+              primaryData.user = res.data.data.GroupParticipants[x].participant_username;
+              primaryData.group = props.group;
+              console.log(x,primaryData.user, primaryData.group);
+              console.log("COMPLETE", primaryData);
+              dataHistory.push(JSON.parse(JSON.stringify(primaryData)));
+              console.log(dataHistory);
+              
             }
             setUsers(dataHistory);
+            console.log(dataHistory);
+            
             // console.log(dataHistory);
         })
         .catch((err) => {
           console.log(err);
         });
         
-  },[setData,props.group, socket]);
+  },[props.group, socket]);
+  const setObject = (data) => {
+    dataHistory.push(data);
+  }
   const setUsers = (data) =>{
       (data !== undefined)? setData(data):setData({message:"No Participants Yet",content:"No List"});
   }
@@ -41,7 +53,7 @@ const AppDetailsComponent = (props) => {
       </Row>
       <hr className="text-white" />
       <Row>
-        <ParticipantsListComponent participants={data} socket={socket}/>
+        <ParticipantsListComponent participants={data} group={props.group} socket={socket}/>
       </Row>
     </div>
   );
