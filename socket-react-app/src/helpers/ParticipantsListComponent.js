@@ -11,8 +11,7 @@ const ParticipantsListComponent = (props) => {
       setJoin(data.user);
       if(data.deletedUsers) setInactive(data.deletedUsers);
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [socket])
   function objExist(arr, user, group) {
     return arr.some(function(el) {
       return el.user === user && el.group === group;
@@ -30,13 +29,13 @@ const ParticipantsListComponent = (props) => {
                   
             ))}
             {inactive.map((inactive,i)=> (
-              (inactive.group === props.group && objExist(join, inactive.user, inactive.group) == false)? <p key={i}> <span className="dot"></span> <span className="text-white align-left" >{inactive.user}</span></p>:""
+              (inactive.group === props.group )? <p key={i}> <span className="dot"></span> <span className="text-white align-left" >{inactive.user}</span></p>:""
                     
-              ))}
-                  {props.participants.map((offline,i)=> (
-                    (offline.group === props.group && objExist(join, offline.user, offline.group) == false && objExist(inactive, offline.user, offline.group) == false)? <p key={i}> <span className="dot"></span> <span className="text-white align-left" >{offline.user}</span></p>:""
-                    
-                  ))}
+            ))}
+            {props.participants.map((offline,i)=> (
+              (offline.group === props.group && objExist(join, offline.user, offline.group) === false && objExist(inactive, offline.user, offline.group) === false)? <p key={i}> <span className="dot"></span> <span className="text-white align-left" >{offline.user}</span></p>:""
+              
+            ))}
             </ul>
         </Row>
   );

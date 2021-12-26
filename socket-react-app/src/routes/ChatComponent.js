@@ -26,6 +26,7 @@ const ChatComponent = (props) => {
       socket.disconnect();
     }
   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
     <div className="container-fluid">

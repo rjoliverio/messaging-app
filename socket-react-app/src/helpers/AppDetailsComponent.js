@@ -15,25 +15,17 @@ const AppDetailsComponent = (props) => {
             for(var x = 0; x < res.data.data.GroupParticipants.length; x++){
               primaryData.user = res.data.data.GroupParticipants[x].participant_username;
               primaryData.group = props.group;
-              console.log(x,primaryData.user, primaryData.group);
-              console.log("COMPLETE", primaryData);
               dataHistory.push(JSON.parse(JSON.stringify(primaryData)));
-              console.log(dataHistory);
               
             }
             setUsers(dataHistory);
-            console.log(dataHistory);
-            
-            // console.log(dataHistory);
         })
         .catch((err) => {
           console.log(err);
         });
         
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[props.group, socket]);
-  const setObject = (data) => {
-    dataHistory.push(data);
-  }
   const setUsers = (data) =>{
       (data !== undefined)? setData(data):setData({message:"No Participants Yet",content:"No List"});
   }
