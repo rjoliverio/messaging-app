@@ -1,0 +1,12 @@
+.box {
+  /* width: 500px; */
+  height: 350px;
+  border: solid white 1px;
+}
+.fw-size{
+  font-size: 14px;
+}
+.fa.fa-times-circle.text-danger.close-hover{
+  font-size: 30px;
+  cursor: pointer;
+}
