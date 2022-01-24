@@ -38,7 +38,10 @@ io.on("connection", (socket) => {
     console.log(users);
     console.log(delUsers);
     if(delUsers.some(({user,group})=> user===credentials.user && group===credentials.group)){
-      delUsers.splice(delUsers.indexOf(credentials),1);
+      // delUsers.splice(delUsers.indexOf(credentials),1);
+      delUsers2 = delUsers.filter(item => JSON.stringify(item) !== JSON.stringify(credentials));
+      console.log(delUsers2);
+      delUsers=delUsers2;
     }
     console.log(delUsers);
     // delUsers.push(credentials);
